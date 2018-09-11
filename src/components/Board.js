@@ -9,11 +9,11 @@ const getCardColor = (cards) =>{
   if(_.endsWith(cards[cards.length-1], '♣')){ return ' text-green-dark'}
 }
 
-const getColor = (row, col, card)=>{
+const getSquareColor = (row, col, cards)=>{
   if ( row % 2 === 0 ){
-    return col % 2 === 0 ? ' bg-orange-lighter' + getCardColor(card) : ' bg-orange-darker'
+    return col % 2 === 0 ? ' bg-orange-lighter' + getCardColor(cards) : ' bg-orange-darker'
   } else {
-    return col % 2 === 0 ? ' bg-orange-darker' : ' bg-orange-lighter' + getCardColor(card)
+    return col % 2 === 0 ? ' bg-orange-darker' : ' bg-orange-lighter' + getCardColor(cards)
   }
 }
 
@@ -35,10 +35,17 @@ const getValue = (row, col, cards)=>{
   }
 }
 
-const Board = ()=>{
+const Square = ({row, col, cards})=>{
   let width = Math.floor(window.outerWidth * 0.125)
   let styles = {width: width, height: width}
+  return(
+    <div key={row + col} style={styles} className={'leading-loose text-center text-2xl' + getSquareColor(row, col, cards)} >
+      <span className='z-20'>{getValue(row, col, cards)}</span>
+    </div>
+  )
+}
 
+const Board = ()=>{
   var suits = ['♠', '♥', '♦', '♣']
   var num = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
   let cards = _.shuffle(_.flatten(suits.map((s)=> num.map((n)=> n+s))))
@@ -48,13 +55,7 @@ const Board = ()=>{
       <div className="flex flex-wrap justify-center">
         {
           _.range(8).map((row,i)=>{
-            return _.range(8).map((col,x)=>{
-              return(
-                <div key={row + col} style={styles} className={'leading-loose text-center text-2xl' + getColor(row, col, cards)} >
-                  <span className='z-20'>{getValue(row, col, cards)}</span>
-                </div>
-              )
-            })
+            return _.range(8).map((col,x)=>{ return <Square row={row} col={col} cards={cards} /> })
           })
         }
       </div>
