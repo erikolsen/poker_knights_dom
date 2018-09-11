@@ -2,18 +2,18 @@ import React from 'react';
 import _ from 'lodash'
 import Draggable from 'react-draggable'
 
-const getCardColor = (cards) =>{
-  if(_.endsWith(cards[cards.length-1], '♠')){ return ' text-black'}
-  if(_.endsWith(cards[cards.length-1], '♥')){ return ' text-red-dark'}
-  if(_.endsWith(cards[cards.length-1], '♦')){ return ' text-blue-dark'}
-  if(_.endsWith(cards[cards.length-1], '♣')){ return ' text-green-dark'}
+const getCardColor = (card) =>{
+  if(_.endsWith(card, '♠')){ return ' text-black'}
+  if(_.endsWith(card, '♥')){ return ' text-red-dark'}
+  if(_.endsWith(card, '♦')){ return ' text-blue-dark'}
+  if(_.endsWith(card, '♣')){ return ' text-green-dark'}
 }
 
-const getSquareColor = (row, col, cards)=>{
+const getSquareColor = (row, col)=>{
   if ( row % 2 === 0 ){
-    return col % 2 === 0 ? ' bg-orange-lighter' + getCardColor(cards) : ' bg-orange-darker'
+    return col % 2 === 0 ? ' bg-orange-lighter' : ' bg-orange-darker'
   } else {
-    return col % 2 === 0 ? ' bg-orange-darker' : ' bg-orange-lighter' + getCardColor(cards)
+    return col % 2 === 0 ? ' bg-orange-darker' : ' bg-orange-lighter'
   }
 }
 
@@ -35,12 +35,12 @@ const getValue = (row, col, cards)=>{
   }
 }
 
-const Square = ({row, col, cards})=>{
+const Square = ({row, col, card})=>{
   let width = Math.floor(window.outerWidth * 0.125)
   let styles = {width: width, height: width}
   return(
-    <div key={row + col} style={styles} className={'leading-loose text-center text-2xl' + getSquareColor(row, col, cards)} >
-      <span className='z-20'>{getValue(row, col, cards)}</span>
+    <div key={row + col} style={styles} className={'leading-loose text-center text-2xl' + getSquareColor(row, col)} >
+      <span className={getCardColor(card)}>{card}</span>
     </div>
   )
 }
@@ -55,7 +55,7 @@ const Board = ()=>{
       <div className="flex flex-wrap justify-center">
         {
           _.range(8).map((row,i)=>{
-            return _.range(8).map((col,x)=>{ return <Square row={row} col={col} cards={cards} /> })
+            return _.range(8).map((col,x)=>{ return <Square row={row} col={col} card={getValue(row,col,cards)} /> })
           })
         }
       </div>
