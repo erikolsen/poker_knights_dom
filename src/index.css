@@ -3745,6 +3745,10 @@ table {
   max-width: 100%;
 }
 
+.max-w-iphone {
+  max-width: 414px;
+}
+
 .min-h-0 {
   min-height: 0;
 }
@@ -9336,6 +9340,10 @@ table {
     max-width: 100%;
   }
 
+  .sm\:max-w-iphone {
+    max-width: 414px;
+  }
+
   .sm\:min-h-0 {
     min-height: 0;
   }
@@ -14908,6 +14916,10 @@ table {
 
   .md\:max-w-full {
     max-width: 100%;
+  }
+
+  .md\:max-w-iphone {
+    max-width: 414px;
   }
 
   .md\:min-h-0 {
@@ -20484,6 +20496,10 @@ table {
     max-width: 100%;
   }
 
+  .lg\:max-w-iphone {
+    max-width: 414px;
+  }
+
   .lg\:min-h-0 {
     min-height: 0;
   }
@@ -26056,6 +26072,10 @@ table {
 
   .xl\:max-w-full {
     max-width: 100%;
+  }
+
+  .xl\:max-w-iphone {
+    max-width: 414px;
   }
 
   .xl\:min-h-0 {
