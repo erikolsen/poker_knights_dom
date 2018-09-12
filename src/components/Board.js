@@ -66,7 +66,7 @@ class Board extends React.Component {
           {
             _.range(8).map((row,i)=>{
               return _.range(8).map((col,x)=>{
-                return <Square row={row} col={col} card={getValue(row,col,cards)} />
+                return <Square key={x} row={row} col={col} card={getValue(row,col,cards)} />
               })
             })
           }
