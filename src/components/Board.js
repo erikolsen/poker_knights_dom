@@ -1,59 +1,22 @@
 import React from 'react'
 import Square from './Square'
-import BetBar from './BetBar'
-import Hand from './Hand'
 import Knight from './Knight'
 import _ from 'lodash'
-import { API_ROOT } from '../constants'
 
-class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cards: [],
-      white: [],
-      black: [],
-      whiteKnights: [],
-      blackKnights: [],
-    }
-  }
-  componentDidMount = () => {
-    fetch(`${API_ROOT}/games/1`)
-      .then(res => res.json())
-      .then(game => this.setState({ cards: game.cards,
-                                    white: game.white.hand,
-                                    black: game.black.hand,
-                                    whiteKnights: game.white.knights,
-                                    blackKnights: game.black.knights,
-      }))
-      //.then(res => console.log(res))
-  }
-
-  render() {
-    let cards = this.state.cards
-    let blackKnights = this.state.blackKnights
-    let whiteKnights = this.state.whiteKnights
-    return (
-      <div>
-        <div className="flex flex-wrap justify-center max-w-iphone">
-          {
-            _.range(8).map((row,i)=>{
-              return _.range(8).map((col,x)=>{
-                return <Square key={x} row={row} col={col} card={getValue(row, col, cards, whiteKnights, blackKnights)} />
-              })
+const Board = ({cards, blackKnights, whiteKnights})=> {
+  return (
+    <div>
+      <div className="flex flex-wrap justify-center max-w-iphone">
+        {
+          _.range(8).map((row,i)=>{
+            return _.range(8).map((col,x)=>{
+              return <Square key={x} row={row} col={col} card={getValue(row, col, cards, whiteKnights, blackKnights)} />
             })
-          }
-        </div>
-
-        <div className='flex justify-between'>
-          <Hand player='White' cards={this.state.white} />
-          <Hand player='Black' cards={this.state.black} />
-        </div>
-
-        <BetBar />
+          })
+        }
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 const getValue = (row, col, cards, whiteKnights, blackKnights)=>{
@@ -77,7 +40,6 @@ const getCard = (cards, row, col)=>{
     return col % 2 === 0 ? '' : cards.pop()
   }
 }
-
 
 export default Board
 
