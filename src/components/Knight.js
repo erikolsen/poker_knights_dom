@@ -2,12 +2,15 @@ import React from 'react'
 import Draggable from 'react-draggable'
 import { API_ROOT, HEADERS, SQUARE_SIZE } from '../constants'
 
-const Knight = ({children})=>{
-  console.log(children)
+const Knight = ({children, white, black})=>{
+  let colors = white ? ' text-white border-white bg-orange-darker' :
+                       ' text-black border-black bg-orange-lighter'
+
+  let classes = "w-4 opacity-75 fixed border-2 rounded-full" + colors
   return(
     <div>
-      <Draggable onStop={(e,ui)=>{ moveKnight(ui, true)}} grid={[SQUARE_SIZE, SQUARE_SIZE]}>
-        <div style={{width: '50px'}} className="w-4 fixed opacity-75 bg-orange-darker text-white border-2 border-white rounded-full">&#9822;</div>
+      <Draggable onStop={(e,ui)=>{ moveKnight(ui, white)}} grid={[SQUARE_SIZE, SQUARE_SIZE]}>
+        <div style={{width: '50px'}} className={classes}>&#9822;</div>
       </Draggable>
       <div>{children}</div>
     </div>

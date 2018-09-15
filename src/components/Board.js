@@ -22,9 +22,9 @@ const Board = ({cards, blackKnights, whiteKnights})=> {
 const getValue = (row, col, cards, whiteKnights, blackKnights)=>{
   let square = [row, col]
   if(_.isEqual(square, whiteKnights[0]) || _.isEqual(square, whiteKnights[1])) {
-    return( <Knight> { getCard(cards, row, col) } </Knight>)
+    return( <Knight white> { getCard(cards, row, col) } </Knight>)
   } else if(_.isEqual(square,blackKnights[0]) || _.isEqual(square, blackKnights[1])) {
-    return( <Knight> { getCard(cards, row, col) } </Knight>)
+    return( <Knight black> { getCard(cards, row, col) } </Knight>)
   } else {
     return getCard(cards, row, col)
   }
