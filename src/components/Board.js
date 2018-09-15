@@ -2,8 +2,9 @@ import React from 'react'
 import Square from './Square'
 import BetBar from './BetBar'
 import Hand from './Hand'
+import Knight from './Knight'
 import _ from 'lodash'
-import Draggable from 'react-draggable'
+//import { API_ROOT, HEADERS, SQUARE_SIZE } from './constants'
 
 const API_ROOT = 'http://localhost:3000'
 export const HEADERS = {
@@ -63,27 +64,11 @@ class Board extends React.Component {
 }
 
 const getValue = (row, col, cards, whiteKnights, blackKnights)=>{
-  //let width = Math.floor(window.outerWidth * 0.125)
-  let width = SQUARE_SIZE
   let square = [row, col]
-  if(_.isEqual(square, whiteKnights[0]) || _.isEqual(square, whiteKnights[1])) { //white knight
-    return(
-      <div>
-        <Draggable onStop={(e,ui)=>{ moveKnight(ui)}} grid={[width, width]}>
-          <div className="opacity-75 bg-orange-lighter text-black border-2 border-black rounded-full">&#9822;</div>
-        </Draggable>
-        <div>{getCard(cards, row, col)}</div>
-      </div>
-    )
-  } else if(_.isEqual(square,blackKnights[0]) || _.isEqual(square, blackKnights[1])) { //black knight
-      return(
-        <div>
-          <Draggable onStop={(e,ui)=>{ moveKnight(ui, true)}} grid={[width, width]}>
-            <div style={{width: '50px'}} className="w-4 fixed opacity-75 bg-orange-darker text-white border-2 border-white rounded-full">&#9822;</div>
-          </Draggable>
-          <div>{getCard(cards, row, col)}</div>
-        </div>
-    )
+  if(_.isEqual(square, whiteKnights[0]) || _.isEqual(square, whiteKnights[1])) {
+    return( <Knight> { getCard(cards, row, col) } </Knight>)
+  } else if(_.isEqual(square,blackKnights[0]) || _.isEqual(square, blackKnights[1])) {
+    return( <Knight> { getCard(cards, row, col) } </Knight>)
   } else {
     return getCard(cards, row, col)
   }
@@ -100,19 +85,6 @@ const getCard = (cards, row, col)=>{
   }
 }
 
-const moveKnight = (ui, white) => {
-  let color = white ? 'white' : 'black'
-  console.log(white ? 'moved white' : 'moved black')
-  let col = (ui.lastX / SQUARE_SIZE) + 1
-  let row = white ? (ui.lastY / SQUARE_SIZE) + 8 : (ui.lastY / SQUARE_SIZE) + 1
-  fetch(`${API_ROOT}/games/1/move`, {
-    method: 'POST',
-    headers: HEADERS,
-    body: JSON.stringify({'game': {'color' : color, 'col': col, 'row': row } } )
-  });
-  console.log('col ' + col)
-  console.log('row ' + row)
-}
 
 export default Board
 
