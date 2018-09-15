@@ -4,3 +4,4 @@ export const HEADERS = {
   Accept: 'application/json',
 }
 export const SQUARE_SIZE = 50
+//export const SQUARE_SIZE = Math.floor(window.outerWidth * 0.125)

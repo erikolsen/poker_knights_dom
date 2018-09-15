@@ -6,7 +6,7 @@ import _ from 'lodash'
 const Board = ({cards, knights})=> {
   return (
     <div>
-      <div className="flex flex-wrap justify-center max-w-iphone">
+      <div className="flex flex-wrap justify-center max-w-iphone min-w-iphone">
         {
           _.range(8).map((row,i)=>{
             return _.range(8).map((col,x)=>{

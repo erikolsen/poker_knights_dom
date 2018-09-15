@@ -556,6 +556,7 @@ module.exports = {
   minWidth: {
     '0': '0',
     'full': '100%',
+    'iphone': '414px',
   },
 
 

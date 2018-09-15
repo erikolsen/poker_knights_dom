@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-const SQUARE_SIZE = 50
+import { SQUARE_SIZE } from '../constants'
 
 const Square = ({row, col, card})=>{
   //let width = Math.floor(window.outerWidth * 0.125)

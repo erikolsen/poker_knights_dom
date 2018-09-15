@@ -41,9 +41,13 @@ class App extends Component {
     return (
       <div>
         <header className="bg-black text-white h-12 text-2xl p-4 w-full mb-2">Poker Knights</header>
-        <Board cards={this.state.cards} knights={this.state.knights} />
+        <div className='flex justify-center'>
+          <Board cards={this.state.cards} knights={this.state.knights} />
+        </div>
+        <div className='flex justify-center'>
+          { playersHand }
+        </div>
 
-        { playersHand }
 
         <BetBar />
       </div>
