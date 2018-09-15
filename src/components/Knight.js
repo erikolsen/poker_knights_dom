@@ -20,10 +20,10 @@ const Knight = ({children, white, black, position, row, col})=>{
 const moveKnight = (ui, white, position, row, col)=> {
   col = (ui.lastX / SQUARE_SIZE) + col
   row = (ui.lastY / SQUARE_SIZE) + row
-
+  let gameId = window.location.pathname.split('/').last()
   let square = [row, col]
   if (row >= 0 && col >= 0){
-    fetch(`${API_ROOT}/games/1/move`, {
+    fetch(`${API_ROOT}/games/${gameId}/move`, {
       method: 'POST',
       headers: HEADERS,
       body: JSON.stringify({'game': {'position' : position, 'move': square} } )

@@ -3,7 +3,6 @@ import BetBar from './BetBar'
 import Hand from './Hand'
 import Board from './Board'
 import { API_ROOT } from '../constants'
-var parsedUrl = new URL(window.location.href);
 if (!Array.prototype.last){
     Array.prototype.last = function(){
         return this[this.length - 1];
@@ -24,7 +23,6 @@ class App extends Component {
   }
   componentDidMount = () => {
     let gameId = this.url.pathname.split('/').last()
-    console.log(gameId)
     fetch(`${API_ROOT}/games/${gameId}`)
       .then(res => res.json())
       .then(game => this.setState({ cards: game.cards,
