@@ -3,10 +3,18 @@ import BetBar from './BetBar'
 import Hand from './Hand'
 import Board from './Board'
 import { API_ROOT } from '../constants'
+var parsedUrl = new URL(window.location.href);
+if (!Array.prototype.last){
+    Array.prototype.last = function(){
+        return this[this.length - 1];
+    };
+};
 
 class App extends Component {
   constructor(props) {
     super(props);
+    this.url =  new URL(window.location.href)
+    this.player = this.url.searchParams.get("player")
     this.state = {
       cards: [],
       white: [],
@@ -15,7 +23,9 @@ class App extends Component {
     }
   }
   componentDidMount = () => {
-    fetch(`${API_ROOT}/games/1`)
+    let gameId = this.url.pathname.split('/').last()
+    console.log(gameId)
+    fetch(`${API_ROOT}/games/${gameId}`)
       .then(res => res.json())
       .then(game => this.setState({ cards: game.cards,
                                     white: game.white.hand,
@@ -26,15 +36,16 @@ class App extends Component {
   }
 
   render() {
+    let playersHand = this.player === 'black' ?
+      <Hand player='Black' cards={this.state.black} /> :
+      <Hand player='White' cards={this.state.white} />
+
     return (
       <div>
         <header className="bg-black text-white h-12 text-2xl p-4 w-full mb-2">Poker Knights</header>
         <Board cards={this.state.cards} knights={this.state.knights} />
 
-        <div className='flex justify-between'>
-          <Hand player='White' cards={this.state.white} />
-          <Hand player='Black' cards={this.state.black} />
-        </div>
+        { playersHand }
 
         <BetBar />
       </div>
