@@ -11,8 +11,7 @@ class App extends Component {
       cards: [],
       white: [],
       black: [],
-      whiteKnights: [],
-      blackKnights: [],
+      knights: [],
     }
   }
   componentDidMount = () => {
@@ -21,8 +20,7 @@ class App extends Component {
       .then(game => this.setState({ cards: game.cards,
                                     white: game.white.hand,
                                     black: game.black.hand,
-                                    whiteKnights: game.white.knights,
-                                    blackKnights: game.black.knights,
+                                    knights: game.knights,
       }))
       //.then(res => console.log(res))
   }
@@ -31,14 +29,13 @@ class App extends Component {
     return (
       <div>
         <header className="bg-black text-white h-12 text-2xl p-4 w-full mb-2">Poker Knights</header>
-        <Board cards={this.state.cards}
-          blackKnights={this.state.blackKnights}
-          whiteKnights={this.state.whiteKnights}
-        />
+        <Board cards={this.state.cards} knights={this.state.knights} />
+
         <div className='flex justify-between'>
           <Hand player='White' cards={this.state.white} />
           <Hand player='Black' cards={this.state.black} />
         </div>
+
         <BetBar />
       </div>
     );

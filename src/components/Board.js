@@ -3,14 +3,18 @@ import Square from './Square'
 import Knight from './Knight'
 import _ from 'lodash'
 
-const Board = ({cards, blackKnights, whiteKnights})=> {
+const Board = ({cards, knights})=> {
   return (
     <div>
       <div className="flex flex-wrap justify-center max-w-iphone">
         {
           _.range(8).map((row,i)=>{
             return _.range(8).map((col,x)=>{
-              return <Square key={x} row={row} col={col} card={getValue(row, col, cards, whiteKnights, blackKnights)} />
+              return(<Square key={x}
+                       row={row}
+                       col={col}
+                       card={getValue(row, col, cards, knights)}
+                     />)
             })
           })
         }
@@ -19,12 +23,14 @@ const Board = ({cards, blackKnights, whiteKnights})=> {
   )
 }
 
-const getValue = (row, col, cards, whiteKnights, blackKnights)=>{
-  let square = [row, col]
-  if(_.isEqual(square, whiteKnights[0]) || _.isEqual(square, whiteKnights[1])) {
-    return( <Knight white> { getCard(cards, row, col) } </Knight>)
-  } else if(_.isEqual(square,blackKnights[0]) || _.isEqual(square, blackKnights[1])) {
-    return( <Knight black> { getCard(cards, row, col) } </Knight>)
+const getValue = (row, col, cards, knights)=>{
+  let square = [row,col]
+  let index = _.findIndex(knights, (pair)=>{ return _.isEqual(square, pair) } )
+
+  if(index === 0 || index === 1) {
+    return( <Knight white position={index}> { getCard(cards, row, col) } </Knight>)
+  } else if(index === 2 || index === 3) {
+    return( <Knight black position={index}> { getCard(cards, row, col) } </Knight>)
   } else {
     return getCard(cards, row, col)
   }
