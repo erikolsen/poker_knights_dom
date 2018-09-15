@@ -28,9 +28,9 @@ const getValue = (row, col, cards, knights)=>{
   let index = _.findIndex(knights, (pair)=>{ return _.isEqual(square, pair) } )
 
   if(index === 0 || index === 1) {
-    return( <Knight white position={index}> { getCard(cards, row, col) } </Knight>)
+    return( <Knight white row={row} col={col} position={index}> { getCard(cards, row, col) } </Knight>)
   } else if(index === 2 || index === 3) {
-    return( <Knight black position={index}> { getCard(cards, row, col) } </Knight>)
+    return( <Knight black row={row} col={col} position={index}> { getCard(cards, row, col) } </Knight>)
   } else {
     return getCard(cards, row, col)
   }
