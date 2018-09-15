@@ -4,14 +4,7 @@ import BetBar from './BetBar'
 import Hand from './Hand'
 import Knight from './Knight'
 import _ from 'lodash'
-//import { API_ROOT, HEADERS, SQUARE_SIZE } from './constants'
-
-const API_ROOT = 'http://localhost:3000'
-export const HEADERS = {
-  'Content-Type': 'application/json',
-  Accept: 'application/json',
-}
-const SQUARE_SIZE = 50
+import { API_ROOT } from '../constants'
 
 class Board extends React.Component {
   constructor(props) {

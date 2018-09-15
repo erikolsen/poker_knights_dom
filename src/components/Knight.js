@@ -1,11 +1,6 @@
 import React from 'react'
 import Draggable from 'react-draggable'
-const SQUARE_SIZE = 50
-const API_ROOT = 'http://localhost:3000'
-const HEADERS = {
-  'Content-Type': 'application/json',
-  Accept: 'application/json',
-}
+import { API_ROOT, HEADERS, SQUARE_SIZE } from '../constants'
 
 const Knight = ({children})=>{
   console.log(children)
