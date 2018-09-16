@@ -4,6 +4,8 @@ import Hand from './Hand'
 import Board from './Board'
 import { API_ROOT } from '../constants'
 import { ActionCable } from 'react-actioncable-provider';
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+
 
 if (!Array.prototype.last){
     Array.prototype.last = function(){
@@ -12,6 +14,7 @@ if (!Array.prototype.last){
 };
 
 class App extends Component {
+  targetElement = null;
   constructor(props) {
     super(props);
     this.url =  new URL(window.location.href)
@@ -25,6 +28,8 @@ class App extends Component {
     }
   }
   componentDidMount = () => {
+    this.targetElement = document.querySelector('#board');
+    disableBodyScroll(this.targetElement)
     console.log('mounting')
     fetch(`${API_ROOT}/games/${this.gameId}`)
       .then(res => res.json())
@@ -34,6 +39,9 @@ class App extends Component {
                                     knights: game.knights,
       }))
       //.then(res => console.log(res))
+  }
+  componentWillUnmount(){
+    clearAllBodyScrollLocks()
   }
 
   updateKnight(res) {
@@ -61,7 +69,6 @@ class App extends Component {
         <div className='flex justify-center'>
           { playersHand }
         </div>
-        <BetBar />
       </div>
     );
   }
