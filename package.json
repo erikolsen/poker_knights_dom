@@ -7,7 +7,8 @@
     "react-actioncable-provider": "^1.0.3",
     "react-dom": "^16.4.1",
     "react-draggable": "^3.0.5",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "surge": "^0.20.1"
   },
   "scripts": {
     "build:css": "postcss src/styles/index.css -o src/index.css",

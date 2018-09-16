@@ -1,5 +1,6 @@
 import React from 'react'
 import Draggable from 'react-draggable'
+import _ from 'lodash'
 import { API_ROOT, HEADERS, SQUARE_SIZE } from '../constants'
 
 const Knight = ({children, white, black, position, row, col})=>{
@@ -7,6 +8,7 @@ const Knight = ({children, white, black, position, row, col})=>{
                        ' text-black border-black bg-orange-lighter'
 
   let classes = "w-4 fixed border-2 rounded-full" + colors
+  //if (!_.trim(children)){ console.log('SHOWDOWN') }
   return(
     <div>
       <Draggable onStop={(e,ui)=>{ moveKnight(ui, white, position, row, col)}} grid={[SQUARE_SIZE, SQUARE_SIZE]} >

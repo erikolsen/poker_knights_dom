@@ -9,6 +9,8 @@ const BetBar = ()=>{
       <button onClick={()=> window.location.reload()} className="border-2 h-24 w-1/3 text-3xl text-center">
         Call </button>
       <button onClick={()=> window.location.reload()} className="border-2 h-24 w-1/3 text-3xl text-center">
+        Raise </button>
+      <button onClick={()=> window.location.reload()} className="border-2 h-24 w-1/3 text-3xl text-center">
         Fold
       </button>
     </div>
