@@ -36,14 +36,20 @@ const getValue = (row, col, cards, knights)=>{
   }
 }
 
+const takeACard = (cards)=>{
+  let card = cards.pop()
+  cards.unshift(card)
+  return card
+}
+
 const getCard = (cards, row, col)=>{
   if(row === 0) { return '' }
   if(row === 7) { return '' }
 
   if ( row % 2 === 0 ){
-    return col % 2 === 0 ? cards.pop() : ''
+    return col % 2 === 0 ? takeACard(cards) : ''
   } else {
-    return col % 2 === 0 ? '' : cards.pop()
+    return col % 2 === 0 ? '' : takeACard(cards)
   }
 }
 

@@ -3,6 +3,8 @@ import BetBar from './BetBar'
 import Hand from './Hand'
 import Board from './Board'
 import { API_ROOT } from '../constants'
+import { ActionCable } from 'react-actioncable-provider';
+
 if (!Array.prototype.last){
     Array.prototype.last = function(){
         return this[this.length - 1];
@@ -13,6 +15,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.url =  new URL(window.location.href)
+    this.gameId = this.url.pathname.split('/').last()
     this.player = this.url.searchParams.get("player")
     this.state = {
       cards: [],
@@ -22,8 +25,8 @@ class App extends Component {
     }
   }
   componentDidMount = () => {
-    let gameId = this.url.pathname.split('/').last()
-    fetch(`${API_ROOT}/games/${gameId}`)
+    console.log('mounting')
+    fetch(`${API_ROOT}/games/${this.gameId}`)
       .then(res => res.json())
       .then(game => this.setState({ cards: game.cards,
                                     white: game.white.hand,
@@ -33,6 +36,12 @@ class App extends Component {
       //.then(res => console.log(res))
   }
 
+  updateKnight(res) {
+    console.log(res.move)
+    console.log('cards ' + this.state.cards)
+    this.setState({knights: res.move})
+  }
+
   render() {
     let playersHand = this.player === 'black' ?
       <Hand player='Black' cards={this.state.black} /> :
@@ -40,6 +49,11 @@ class App extends Component {
 
     return (
       <div>
+        <ActionCable
+          channel={{ channel: 'MovesChannel', games: this.gameId }}
+          onReceived={(res)=> this.updateKnight(res)}
+        />
+
         <header className="bg-black text-white h-12 text-2xl p-4 w-full mb-2">Poker Knights</header>
         <div className='flex justify-center'>
           <Board cards={this.state.cards} knights={this.state.knights} />
@@ -47,8 +61,6 @@ class App extends Component {
         <div className='flex justify-center'>
           { playersHand }
         </div>
-
-
         <BetBar />
       </div>
     );
