@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import BetBar from './BetBar'
+//import BetBar from './BetBar'
 import Hand from './Hand'
 import Board from './Board'
 import { API_ROOT } from '../constants'
 import { ActionCable } from 'react-actioncable-provider';
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-
-
-if (!Array.prototype.last){
-    Array.prototype.last = function(){
-        return this[this.length - 1];
-    };
-};
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 class App extends Component {
   targetElement = null;
@@ -30,7 +23,6 @@ class App extends Component {
   componentDidMount = () => {
     this.targetElement = document.querySelector('#board');
     disableBodyScroll(this.targetElement)
-    console.log('mounting')
     fetch(`${API_ROOT}/games/${this.gameId}`)
       .then(res => res.json())
       .then(game => this.setState({ cards: game.cards,
