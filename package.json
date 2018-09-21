@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "body-scroll-lock": "^2.5.7",
+    "query-string": "^6.1.0",
     "react": "^16.4.1",
     "react-actioncable-provider": "^1.0.3",
     "react-dom": "^16.4.1",
     "react-draggable": "^3.0.5",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "surge": "^0.20.1"
   },

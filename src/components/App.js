@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import Game from './Game'
-import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import Home from './Home'
+import { Route, Switch, Link } from 'react-router-dom'
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
 class App extends Component {
   targetElement = null;
@@ -15,7 +17,17 @@ class App extends Component {
   render() {
     return (
       <div id='app'>
-        <Game />
+        <header>
+          <Link to='/'>
+            <h1 className="bg-black text-white h-12 text-2xl p-4 w-full mb-2">
+              Poker Knights
+            </h1>
+          </Link>
+        </header>
+        <Switch>
+          <Route path='/games/:gameId' component={Game}/>
+          <Route exact path='/' component={Home}/>
+        </Switch>
       </div>
     );
   }

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import Hand from './Hand'
 import Board from './Board'
+import QS from 'query-string'
 import { API_ROOT } from '../constants'
 
       //knights: [[7,0], [7,7],[0,0],[0,7]],
 class Game extends Component {
   constructor(props) {
     super(props);
-    this.url =  new URL(window.location.href)
-    this.gameId = this.url.pathname.split('/').last()
-    this.player = this.url.searchParams.get("player")
+    this.gameId = props.gameId
+    this.player = QS.parse(props.location.search).player
     this.state = {
       cards: [],
       white: [],
@@ -36,7 +36,6 @@ class Game extends Component {
 
     return (
       <div>
-        <header className="bg-black text-white h-12 text-2xl p-4 w-full mb-2">Poker Knights</header>
         <div className='flex justify-center'>
           <Board cards={this.state.cards} knights={this.state.knights} />
         </div>
