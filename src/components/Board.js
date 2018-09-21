@@ -1,26 +1,56 @@
-import React from 'react'
+import React, { Component } from 'react';
 import Square from './Square'
 import Knight from './Knight'
 import _ from 'lodash'
+import { ActionCable } from 'react-actioncable-provider';
+import { API_ROOT } from '../constants'
 
-const Board = ({cards, knights})=> {
-  return (
-    <div id='board'>
-      <div className="flex flex-wrap justify-center max-w-iphone min-w-iphone">
-        {
-          _.range(8).map((row,i)=>{
-            return _.range(8).map((col,x)=>{
-              return(<Square key={x}
-                       row={row}
-                       col={col}
-                       card={getValue(row, col, cards, knights)}
-                     />)
+class Board extends Component {
+  constructor(props) {
+    super(props);
+    this.url =  new URL(window.location.href)
+    this.gameId = this.url.pathname.split('/').last()
+    this.player = this.url.searchParams.get("player")
+    this.state = {
+      knights: [],
+    }
+  }
+
+  componentWillMount() {
+    fetch(`${API_ROOT}/games/${this.gameId}`)
+      .then(res => res.json())
+      .then(game => this.setState({ knights: game.knights }))
+      //.then(res => console.log(res))
+  }
+
+  updateKnight(res) {
+    this.setState({knights: res.move})
+  }
+
+  render(){
+    return (
+      <div id='board'>
+        <ActionCable
+          channel={{ channel: 'MovesChannel', games: this.gameId }}
+          onReceived={(res)=> this.updateKnight(res)}
+        />
+
+        <div className="flex flex-wrap justify-center max-w-iphone min-w-iphone">
+          {
+            _.range(8).map((row,i)=>{
+              return _.range(8).map((col,x)=>{
+                return(<Square key={x}
+                         row={row}
+                         col={col}
+                         card={getValue(row, col, this.props.cards, this.state.knights)}
+                       />)
+              })
             })
-          })
-        }
+          }
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 const getValue = (row, col, cards, knights)=>{
