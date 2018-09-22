@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Game from './Game'
 import Home from './Home'
+import Lobby from './Lobby'
 import { Route, Switch, Link } from 'react-router-dom'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
@@ -25,8 +26,9 @@ class App extends Component {
           </Link>
         </header>
         <Switch>
-          <Route path='/games/:gameId' component={Game}/>
           <Route exact path='/' component={Home}/>
+          <Route exact path='/lobby' component={Lobby}/>
+          <Route path='/games/:gameId' component={Game}/>
         </Switch>
       </div>
     );

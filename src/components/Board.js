@@ -4,6 +4,9 @@ import Knight from './Knight'
 import _ from 'lodash'
 import { ActionCable } from 'react-actioncable-provider';
 import { API_ROOT } from '../constants'
+//const x = i % 8;
+//const y = Math.floor(i / 8);
+//const black = (x + y) % 2 === 1;
 
 class Board extends Component {
   constructor(props) {
@@ -29,13 +32,13 @@ class Board extends Component {
 
   render(){
     return (
-      <div id='board'>
+      <div>
         <ActionCable
           channel={{ channel: 'MovesChannel', games: this.gameId }}
           onReceived={(res)=> this.updateKnight(res)}
         />
 
-        <div className="flex flex-wrap justify-center max-w-iphone min-w-iphone">
+        <div id='board' className="flex flex-wrap justify-center max-w-iphone min-w-iphone">
           {
             _.range(8).map((row,i)=>{
               return _.range(8).map((col,x)=>{
