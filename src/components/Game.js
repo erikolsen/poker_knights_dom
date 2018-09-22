@@ -8,7 +8,9 @@ import { API_ROOT } from '../constants'
 class Game extends Component {
   constructor(props) {
     super(props);
-    this.gameId = props.gameId
+    this.gameId = props.match.params.gameId
+    this.handId = props.match.params.handId
+    this.roundId = props.match.params.roundId
     this.player = QS.parse(props.location.search).player
     this.state = {
       cards: [],
@@ -19,11 +21,11 @@ class Game extends Component {
   }
 
   componentWillMount() {
-    fetch(`${API_ROOT}/games/${this.gameId}`)
+    fetch(`${API_ROOT}/games/${this.gameId}/hands/${this.handId}/rounds/${this.roundId}`)
       .then(res => res.json())
       .then(game => this.setState({ cards: game.cards,
-                                    white: game.white.hand,
-                                    black: game.black.hand,
+                                    white: game.white,
+                                    black: game.black,
                                     knights: game.knights,
       }))
       //.then(res => console.log(res))
@@ -37,7 +39,7 @@ class Game extends Component {
     return (
       <div>
         <div className='flex justify-center'>
-          <Board cards={this.state.cards} knights={this.state.knights} />
+          <Board gameId={this.gameId} handId={this.handId} roundId={this.roundId} cards={this.state.cards} knights={this.state.knights} />
         </div>
         <div className='flex justify-center'>
           { playersHand }

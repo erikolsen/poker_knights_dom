@@ -1,6 +1,18 @@
 import React from 'react'
 import YouTube from 'react-youtube';
 import { Link } from 'react-router-dom'
+const guid = (len) => {
+  var buf = [],
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+    charlen = chars.length,
+    length = len || 32;
+
+  for (var i = 0; i < length; i++) {
+    buf[i] = chars.charAt(Math.floor(Math.random() * charlen));
+  }
+
+  return buf.join('');
+}
 
 class Home extends React.Component {
   constructor(props) {
@@ -32,7 +44,7 @@ class Home extends React.Component {
           />
         </div>
         <div className='w-full'>
-          <Link to='/lobby' className='border-4 border-indigo m-2 p-2 text-xl no-underline flex justify-center'>Start a Game</Link>
+          <Link to={'/games/' + guid()} className='border-4 border-indigo m-2 p-2 text-xl no-underline flex justify-center'>Start a Game</Link>
         </div>
       </div>
     )

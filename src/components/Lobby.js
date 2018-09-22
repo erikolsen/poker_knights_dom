@@ -1,37 +1,58 @@
 import React from 'react'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
+import { API_ROOT, HEADERS } from '../constants'
 
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
+    this.gameLink = window.location.href
     this.state = {
-      white: '',
-      black: '',
+      playerOne: '',
+      playerTwo: '',
       stack: '1000',
       blinds: '50',
       timer: '30',
-      whiteReady: false,
-      blackReady: false,
-      gameLink: window.location + '/aqwerpoih',
+      playerOneReady: false,
+      playerTwoReady: false,
       copied: false,
+      gameId: props.match.params.gameId
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
+  createGame(){
+    if(this.state.playerOneReady && this.state.playerTwoReady){
+      fetch(`${API_ROOT}/games`, {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify(this.state)
+      }).then(
+        (response)=> {return response.json() }
+      ).then((data) => {
+        if(data.success){
+          window.location = window.location.href + '/hands/1/rounds/1'
+        } else {
+          console.log(data)
+          alert('Error')
+        }
+      })
+    }
+  }
+
   handleChange(event) {
     switch (event.target.name) {
-      case 'whiteReady':
-        if(!!this.state.white){
+      case 'playerTwoReady':
+        if(!!this.state.playerTwo){
           this.setState(prevState => ({
-            whiteReady: !prevState.whiteReady
+            playerTwoReady: !prevState.playerTwoReady
           }));
         }
         break;
-      case 'blackReady':
-        if(!!this.state.black){
+      case 'playerOneReady':
+        if(!!this.state.playerOne){
           this.setState(prevState => ({
-            blackReady: !prevState.blackReady
+            playerOneReady: !prevState.playerOneReady
           }));
         }
         break;
@@ -44,14 +65,14 @@ class Lobby extends React.Component {
       case 'timer':
         this.setState({timer: event.target.value})
         break;
-      case 'white':
-        if(!this.state.whiteReady){
-          this.setState({white: event.target.value})
+      case 'playerTwo':
+        if(!this.state.playerTwoReady){
+          this.setState({playerTwo: event.target.value})
         }
         break;
-      case 'black':
-        if(!this.state.blackReady){
-          this.setState({black: event.target.value})
+      case 'playerOne':
+        if(!this.state.playerOneReady){
+          this.setState({playerOne: event.target.value})
         }
         break;
       default:
@@ -61,8 +82,9 @@ class Lobby extends React.Component {
   }
 
   render() {
-    let blackReady = this.state.blackReady ? ' border-2 border-indigo' : ''
-    let whiteReady = this.state.whiteReady ? ' border-2 border-indigo' : ''
+    let playerOneReady = this.state.playerOneReady ? ' border-2 border-indigo' : ''
+    let playerTwoReady = this.state.playerTwoReady ? ' border-2 border-indigo' : ''
+    this.createGame()
 
     return (
       <div className='m-2'>
@@ -91,32 +113,32 @@ class Lobby extends React.Component {
             </label>
           </div>
 
-          <div className={'flex items-center my-2' + whiteReady}>
+          <div className={'flex items-center my-2' + playerOneReady}>
             <label className='my-2 flex w-4/5'>
-              <span className='mr-2 w-1/5'>White:</span>
-              <input className='border bg-grey-lighter w-full mr-2 w-3/5' name='white' type="text" value={this.state.white} onChange={this.handleChange} />
+              <span className='mr-2 w-1/5'>Player One:</span>
+              <input className='border bg-grey-lighter w-full mr-2 w-3/5' name='playerOne' type="text" value={this.state.playerOne} onChange={this.handleChange} />
             </label>
-            <button className='border-2 border-indigo p-1 text-xl w-1/5' name='whiteReady' onClick={this.handleChange} value={this.state.whiteReady}>
-              { this.state.whiteReady ? 'Change' : 'Ready' }
+            <button className='border-2 border-indigo p-1 text-xl w-1/5' name='playerOneReady' onClick={this.handleChange} value={this.state.playerOneReady}>
+              { this.state.playerOneReady ? 'Change' : 'Ready' }
             </button>
           </div>
 
-          <div className={'flex items-center my-2' + blackReady}>
+          <div className={'flex items-center my-2' + playerTwoReady}>
             <label className='my-2 flex w-4/5'>
-              <span className='mr-2 w-1/5'>Black:</span>
-              <input className='border bg-grey-lighter w-full mr-2 w-3/5' name='black' type="text" value={this.state.black} onChange={this.handleChange} />
+              <span className='mr-2 w-1/5'>Player Two:</span>
+              <input className='border bg-grey-lighter w-full mr-2 w-3/5' name='playerTwo' type="text" value={this.state.playerTwo} onChange={this.handleChange} />
             </label>
-            <button className='border-2 border-indigo p-1 text-xl w-1/5' name='blackReady' onClick={this.handleChange} value={this.state.blackReady}>
-              { this.state.blackReady ? 'Change' : 'Ready' }
+            <button className='border-2 border-indigo p-1 text-xl w-1/5' name='playerTwoReady' onClick={this.handleChange} value={this.state.playerTwoReady}>
+              { this.state.playerTwoReady ? 'Change' : 'Ready' }
             </button>
           </div>
 
           <div>
             <h5>To invite someone to the join send them this link. Game will start when both players are ready.</h5>
             <p className='m-2'>
-              {this.state.gameLink}
+              {this.gameLink}
             </p>
-            <CopyToClipboard text={this.state.gameLink}
+            <CopyToClipboard text={this.gameLink}
               onCopy={() => this.setState({copied: true})}>
               <button className='border-2 border-indigo p-1 text-xl w-full'>Copy Link</button>
             </CopyToClipboard>
@@ -125,7 +147,7 @@ class Lobby extends React.Component {
           </div>
           <div>
             <h1 className='text-indigo text-center' >
-              { this.state.whiteReady && this.state.blackReady && !!this.state.white && !!this.state.black ? 'Game Starting' : '' }
+              { this.state.playerTwoReady && this.state.playerOneReady && !!this.state.playerTwo && !!this.state.playerOne ? 'Game Starting' : '' }
             </h1>
           </div>
         </div>

@@ -11,8 +11,10 @@ import { API_ROOT } from '../constants'
 class Board extends Component {
   constructor(props) {
     super(props);
+    this.gameId = props.gameId
+    this.handId = props.handId
+    this.roundId = props.roundId
     this.url =  new URL(window.location.href)
-    this.gameId = this.url.pathname.split('/').last()
     this.player = this.url.searchParams.get("player")
     this.state = {
       knights: [],
@@ -20,7 +22,7 @@ class Board extends Component {
   }
 
   componentWillMount() {
-    fetch(`${API_ROOT}/games/${this.gameId}`)
+    fetch(`${API_ROOT}/games/${this.gameId}/hands/${this.handId}/rounds/${this.roundId}`)
       .then(res => res.json())
       .then(game => this.setState({ knights: game.knights }))
       //.then(res => console.log(res))
@@ -30,11 +32,24 @@ class Board extends Component {
     this.setState({knights: res.move})
   }
 
+  getValue(row, col){
+    let square = [row,col]
+    let index = _.findIndex(this.state.knights, (pair)=>{ return _.isEqual(square, pair) } )
+
+    if(index === 0 || index === 1) {
+      return( <Knight gameId={this.gameId} handId={this.handId} roundId={this.roundId} white row={row} col={col} position={index}>{ getCard(this.props.cards, row, col) }</Knight>)
+    } else if(index === 2 || index === 3) {
+      return( <Knight gameId={this.gameId} handId={this.handId} roundId={this.roundId} black row={row} col={col} position={index}>{ getCard(this.props.cards, row, col) }</Knight>)
+    } else {
+      return getCard(this.props.cards, row, col)
+    }
+  }
+
   render(){
     return (
       <div>
         <ActionCable
-          channel={{ channel: 'MovesChannel', games: this.gameId }}
+          channel={{ channel: 'MovesChannel', gameId: this.gameId, handId: this.handId, roundId: this.roundId }}
           onReceived={(res)=> this.updateKnight(res)}
         />
 
@@ -45,7 +60,7 @@ class Board extends Component {
                 return(<Square key={x}
                          row={row}
                          col={col}
-                         card={getValue(row, col, this.props.cards, this.state.knights)}
+                         card={this.getValue(row, col)}
                        />)
               })
             })
@@ -53,19 +68,6 @@ class Board extends Component {
         </div>
       </div>
     )
-  }
-}
-
-const getValue = (row, col, cards, knights)=>{
-  let square = [row,col]
-  let index = _.findIndex(knights, (pair)=>{ return _.isEqual(square, pair) } )
-
-  if(index === 0 || index === 1) {
-    return( <Knight white row={row} col={col} position={index}>{ getCard(cards, row, col) }</Knight>)
-  } else if(index === 2 || index === 3) {
-    return( <Knight black row={row} col={col} position={index}>{ getCard(cards, row, col) }</Knight>)
-  } else {
-    return getCard(cards, row, col)
   }
 }
 
