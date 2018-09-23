@@ -1,5 +1,6 @@
 import React from 'react'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
+import { ActionCable } from 'react-actioncable-provider';
 import { API_ROOT, HEADERS } from '../constants'
 
 class Lobby extends React.Component {
@@ -44,43 +45,51 @@ class Lobby extends React.Component {
     switch (event.target.name) {
       case 'playerTwoReady':
         if(!!this.state.playerTwo){
-          this.setState(prevState => ({
-            playerTwoReady: !prevState.playerTwoReady
-          }));
+          this.postChange({playerTwoReady: !this.state.playerTwoReady})
         }
         localStorage.setItem('playerTwo', this.state.playerTwo)
         break;
       case 'playerOneReady':
         if(!!this.state.playerOne){
-          this.setState(prevState => ({
-            playerOneReady: !prevState.playerOneReady
-          }));
+          this.postChange({playerOneReady: !this.state.playerOneReady})
         }
         localStorage.setItem('playerOne', this.state.playerOne)
         break;
       case 'stack':
-        this.setState({stack: event.target.value})
+        this.postChange({stack: event.target.value})
         break;
       case 'blinds':
-        this.setState({blinds: event.target.value})
+        this.postChange({blinds: event.target.value})
         break;
       case 'timer':
-        this.setState({timer: event.target.value})
+        this.postChange({timer: event.target.value})
         break;
       case 'playerTwo':
         if(!this.state.playerTwoReady){
-          this.setState({playerTwo: event.target.value})
+          this.postChange({playerTwo: event.target.value})
         }
         break;
       case 'playerOne':
         if(!this.state.playerOneReady){
-          this.setState({playerOne: event.target.value})
+          this.postChange({playerOne: event.target.value})
         }
         break;
       default:
         console.log('default')
         return ''
     }
+  }
+
+  postChange(obj){
+    fetch(`${API_ROOT}/games/${this.state.gameId}/update_form`,{
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify(obj)
+    });
+  }
+
+  updateChange(res){
+    this.setState(res)
   }
 
   render() {
@@ -90,6 +99,11 @@ class Lobby extends React.Component {
 
     return (
       <div className='m-2'>
+        <ActionCable
+          channel={{ channel: 'LobbysChannel', gameId: this.state.gameId }}
+          onReceived={(res)=> this.updateChange(res)}
+        />
+
         <h1>Lobby</h1>
         <div className='text-2xl'>
           <div>
@@ -138,7 +152,7 @@ class Lobby extends React.Component {
           <div>
             <h5>To invite someone to the join send them this link. Game will start when both players are ready.</h5>
             <p className='m-2'>
-              {this.gameLink}
+              <span className='text-xlg mr-1'>Game Id:</span><span className='text-sm'>{this.state.gameId}</span>
             </p>
             <CopyToClipboard text={this.gameLink}
               onCopy={() => this.setState({copied: true})}>
@@ -146,11 +160,6 @@ class Lobby extends React.Component {
             </CopyToClipboard>
 
             {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
-          </div>
-          <div>
-            <h1 className='text-indigo text-center' >
-              { this.state.playerTwoReady && this.state.playerOneReady && !!this.state.playerTwo && !!this.state.playerOne ? 'Game Starting' : '' }
-            </h1>
           </div>
         </div>
       </div>

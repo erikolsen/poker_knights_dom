@@ -4,7 +4,6 @@ import Board from './Board'
 import QS from 'query-string'
 import { API_ROOT } from '../constants'
 
-      //knights: [[7,0], [7,7],[0,0],[0,7]],
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -32,17 +31,22 @@ class Game extends Component {
   }
 
   render() {
+    console.log(localStorage.getItem('playerOne'))
+    console.log('Cards ' + this.state.cards)
     let playersHand = this.player === 'black' ?
       <Hand player='Black' cards={this.state.black} /> :
       <Hand player='White' cards={this.state.white} />
 
     return (
       <div>
+        <div>
+          <Hand player='Black' cards={this.state.black} /> :
+        </div>
         <div className='flex justify-center'>
           <Board gameId={this.gameId} handId={this.handId} roundId={this.roundId} cards={this.state.cards} knights={this.state.knights} />
         </div>
-        <div className='flex justify-center'>
-          { playersHand }
+        <div className=''>
+          <Hand player='White' cards={this.state.white} />
         </div>
       </div>
     );
