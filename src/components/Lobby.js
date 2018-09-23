@@ -48,6 +48,7 @@ class Lobby extends React.Component {
             playerTwoReady: !prevState.playerTwoReady
           }));
         }
+        localStorage.setItem('playerTwo', this.state.playerTwo)
         break;
       case 'playerOneReady':
         if(!!this.state.playerOne){
@@ -55,6 +56,7 @@ class Lobby extends React.Component {
             playerOneReady: !prevState.playerOneReady
           }));
         }
+        localStorage.setItem('playerOne', this.state.playerOne)
         break;
       case 'stack':
         this.setState({stack: event.target.value})
