@@ -7,6 +7,7 @@ class Lobby extends React.Component {
   constructor(props) {
     super(props);
     this.gameLink = window.location.href
+    localStorage.clear()
     this.state = {
       playerOne: '',
       playerTwo: '',
@@ -46,14 +47,14 @@ class Lobby extends React.Component {
       case 'playerTwoReady':
         if(!!this.state.playerTwo){
           this.postChange({playerTwoReady: !this.state.playerTwoReady})
+          localStorage.setItem('playerTwo', this.state.playerTwo)
         }
-        localStorage.setItem('playerTwo', this.state.playerTwo)
         break;
       case 'playerOneReady':
         if(!!this.state.playerOne){
           this.postChange({playerOneReady: !this.state.playerOneReady})
+          localStorage.setItem('playerOne', this.state.playerOne)
         }
-        localStorage.setItem('playerOne', this.state.playerOne)
         break;
       case 'stack':
         this.postChange({stack: event.target.value})
