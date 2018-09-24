@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "body-scroll-lock": "^2.5.7",
+    "pokersolver": "^2.1.2",
     "query-string": "^6.1.0",
     "react": "^16.4.1",
     "react-actioncable-provider": "^1.0.3",

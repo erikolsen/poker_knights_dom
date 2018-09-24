@@ -4,9 +4,18 @@ import Knight from './Knight'
 import _ from 'lodash'
 import { ActionCable } from 'react-actioncable-provider';
 import { API_ROOT } from '../constants'
+import { Hand } from 'pokersolver'
+import { Link } from 'react-router-dom'
 //const x = i % 8;
 //const y = Math.floor(i / 8);
 //const black = (x + y) % 2 === 1;
+
+const gameOver = (positions)=>{
+  let collection = _.uniq(positions.map((pos)=>{
+                    return _.sum(pos) % 2 === 1
+                  }))
+  return collection.length === 1 && collection[0] === true
+}
 
 class Board extends Component {
   constructor(props) {
@@ -45,7 +54,49 @@ class Board extends Component {
     }
   }
 
+  getWinner(){
+    if(!_.isEmpty(this.state.knights)){
+      let cards = _.reverse(_.chunk(this.props.cards, 4))
+      cards.push([])
+      cards.unshift([])
+      let playerOneRows = this.state.knights.slice(0,2).map((x)=> x[0])
+      let playerTwoRows = this.state.knights.slice(2,4).map((x)=> x[0])
+      //console.log('white rows ' + playerOneRows)
+      //console.log('black rows ' + playerTwoRows)
+
+      //console.log('whee ' + cards[playerOneRows[0]])
+      //console.log('white hand ' + this.props.white)
+      let whiteOneA = Hand.solve(_.concat(cards[playerOneRows[0]], this.props.white[0]))
+      let whiteOneB = Hand.solve(_.concat(cards[playerOneRows[0]], this.props.white[1]))
+      let whiteTwoA = Hand.solve(_.concat(cards[playerOneRows[1]], this.props.white[0]))
+      let whiteTwoB = Hand.solve(_.concat(cards[playerOneRows[1]], this.props.white[1]))
+      //let whiteHands = [whiteOneA]
+      let whiteHands = Hand.winners([whiteOneA, whiteOneB, whiteTwoA, whiteTwoB])
+      //console.log('White Best ' + whiteHands)
+
+      let blackOneA = Hand.solve(_.concat(cards[playerTwoRows[0]], this.props.black[0]))
+      let blackOneB = Hand.solve(_.concat(cards[playerTwoRows[0]], this.props.black[1]))
+      let blackTwoA = Hand.solve(_.concat(cards[playerTwoRows[1]], this.props.black[0]))
+      let blackTwoB = Hand.solve(_.concat(cards[playerTwoRows[1]], this.props.black[1]))
+      let blackHands = Hand.winners([blackOneA, blackOneB, blackTwoA, blackTwoB])
+      //console.log('Black best ' + blackHands)
+
+      let hands = _.concat(whiteHands, blackHands)
+      console.log('Hands ' + hands)
+      let winner = Hand.winners(hands)
+      let whiteWins = _.includes(whiteHands, winner[0])
+      console.log('White Wins ' + _.includes(whiteHands, winner[0]))
+      console.log('Winner ' + winner)
+      console.log('Description ' + winner[0].descr)
+      return whiteWins ? `White wins with ${winner[0].descr}` : `Black wins with ${winner[0].descr}`
+    }
+  }
+
   render(){
+    //console.log('Game Over ' + gameOver(this.state.knights))
+    //let winner = gameOver(this.state.knights) ? <WinnerLink gameId={this.gameId} handId={this.handId} winner={gameOver(this.state.knights)} /> : ''
+    let winner = gameOver(this.state.knights) ? this.getWinner() : ''
+
     return (
       <div>
         <ActionCable
@@ -53,6 +104,7 @@ class Board extends Component {
           onReceived={(res)=> this.updateKnight(res)}
         />
 
+        <h1>{winner}</h1>
         <div id='board' className="flex flex-wrap justify-center max-w-iphone min-w-iphone">
           {
             _.range(8).map((row,i)=>{

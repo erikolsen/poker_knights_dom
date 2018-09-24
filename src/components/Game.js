@@ -54,7 +54,7 @@ class Game extends Component {
           {playerTwoHand}
         </div>
         <div className='flex justify-center'>
-          <Board gameId={this.gameId} handId={this.handId} roundId={this.roundId} cards={this.state.cards} knights={this.state.knights} />
+          <Board white={this.state.white} black={this.state.black} gameId={this.gameId} handId={this.handId} roundId={this.roundId} cards={this.state.cards} knights={this.state.knights} />
         </div>
         <div className=''>
           { playerOneHand }
