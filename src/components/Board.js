@@ -53,6 +53,15 @@ class Board extends Component {
       return getCard(this.props.cards, row, col)
     }
   }
+  swapCard(card){
+    _.replace(card, '♠', 's');
+    _.replace(card, '♥', 'h');
+    _.replace(card, '♣', 'c');
+    _.replace(card, '♦', 'd');
+    _.replace(card, '10', 'T');
+    return card
+  }
+
 
   getWinner(){
     if(!_.isEmpty(this.state.knights)){
@@ -66,28 +75,28 @@ class Board extends Component {
 
       //console.log('whee ' + cards[playerOneRows[0]])
       //console.log('white hand ' + this.props.white)
-      let whiteOneA = Hand.solve(_.concat(cards[playerOneRows[0]], this.props.white[0]))
-      let whiteOneB = Hand.solve(_.concat(cards[playerOneRows[0]], this.props.white[1]))
-      let whiteTwoA = Hand.solve(_.concat(cards[playerOneRows[1]], this.props.white[0]))
-      let whiteTwoB = Hand.solve(_.concat(cards[playerOneRows[1]], this.props.white[1]))
+      let whiteOneA = Hand.solve(_.concat(cards[playerOneRows[0]], this.props.white[0]).map((card)=> this.swapCard(card)))
+      let whiteOneB = Hand.solve(_.concat(cards[playerOneRows[0]], this.props.white[1]).map((card)=> this.swapCard(card)))
+      let whiteTwoA = Hand.solve(_.concat(cards[playerOneRows[1]], this.props.white[0]).map((card)=> this.swapCard(card)))
+      let whiteTwoB = Hand.solve(_.concat(cards[playerOneRows[1]], this.props.white[1]).map((card)=> this.swapCard(card)))
       //let whiteHands = [whiteOneA]
       let whiteHands = Hand.winners([whiteOneA, whiteOneB, whiteTwoA, whiteTwoB])
       //console.log('White Best ' + whiteHands)
 
-      let blackOneA = Hand.solve(_.concat(cards[playerTwoRows[0]], this.props.black[0]))
-      let blackOneB = Hand.solve(_.concat(cards[playerTwoRows[0]], this.props.black[1]))
-      let blackTwoA = Hand.solve(_.concat(cards[playerTwoRows[1]], this.props.black[0]))
-      let blackTwoB = Hand.solve(_.concat(cards[playerTwoRows[1]], this.props.black[1]))
+      let blackOneA = Hand.solve(_.concat(cards[playerTwoRows[0]], this.props.black[0]).map((card)=> this.swapCard(card)))
+      let blackOneB = Hand.solve(_.concat(cards[playerTwoRows[0]], this.props.black[1]).map((card)=> this.swapCard(card)))
+      let blackTwoA = Hand.solve(_.concat(cards[playerTwoRows[1]], this.props.black[0]).map((card)=> this.swapCard(card)))
+      let blackTwoB = Hand.solve(_.concat(cards[playerTwoRows[1]], this.props.black[1]).map((card)=> this.swapCard(card)))
       let blackHands = Hand.winners([blackOneA, blackOneB, blackTwoA, blackTwoB])
       //console.log('Black best ' + blackHands)
 
       let hands = _.concat(whiteHands, blackHands)
-      console.log('Hands ' + hands)
+      //console.log('Hands ' + hands)
       let winner = Hand.winners(hands)
       let whiteWins = _.includes(whiteHands, winner[0])
-      console.log('White Wins ' + _.includes(whiteHands, winner[0]))
-      console.log('Winner ' + winner)
-      console.log('Description ' + winner[0].descr)
+      //console.log('White Wins ' + _.includes(whiteHands, winner[0]))
+      //console.log('Winner ' + winner)
+      //console.log('Description ' + winner[0].descr)
       return whiteWins ? `White wins with ${winner[0].descr}` : `Black wins with ${winner[0].descr}`
     }
   }
