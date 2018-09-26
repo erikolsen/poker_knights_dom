@@ -3746,7 +3746,7 @@ table {
 }
 
 .max-w-iphone {
-  max-width: 414px;
+  max-width: 360px;
 }
 
 .min-h-0 {
@@ -3770,7 +3770,7 @@ table {
 }
 
 .min-w-iphone {
-  min-width: 414px;
+  min-width: 360px;
 }
 
 .-m-0 {
@@ -9345,7 +9345,7 @@ table {
   }
 
   .sm\:max-w-iphone {
-    max-width: 414px;
+    max-width: 360px;
   }
 
   .sm\:min-h-0 {
@@ -9369,7 +9369,7 @@ table {
   }
 
   .sm\:min-w-iphone {
-    min-width: 414px;
+    min-width: 360px;
   }
 
   .sm\:-m-0 {
@@ -14927,7 +14927,7 @@ table {
   }
 
   .md\:max-w-iphone {
-    max-width: 414px;
+    max-width: 360px;
   }
 
   .md\:min-h-0 {
@@ -14951,7 +14951,7 @@ table {
   }
 
   .md\:min-w-iphone {
-    min-width: 414px;
+    min-width: 360px;
   }
 
   .md\:-m-0 {
@@ -20509,7 +20509,7 @@ table {
   }
 
   .lg\:max-w-iphone {
-    max-width: 414px;
+    max-width: 360px;
   }
 
   .lg\:min-h-0 {
@@ -20533,7 +20533,7 @@ table {
   }
 
   .lg\:min-w-iphone {
-    min-width: 414px;
+    min-width: 360px;
   }
 
   .lg\:-m-0 {
@@ -26091,7 +26091,7 @@ table {
   }
 
   .xl\:max-w-iphone {
-    max-width: 414px;
+    max-width: 360px;
   }
 
   .xl\:min-h-0 {
@@ -26115,7 +26115,7 @@ table {
   }
 
   .xl\:min-w-iphone {
-    min-width: 414px;
+    min-width: 360px;
   }
 
   .xl\:-m-0 {

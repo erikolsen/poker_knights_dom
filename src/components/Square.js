@@ -6,7 +6,7 @@ const Square = ({row, col, card})=>{
   //let width = Math.floor(window.outerWidth * 0.125)
   let styles = {width: SQUARE_SIZE, height: SQUARE_SIZE}
   return(
-    <div key={row + col} style={styles} className={'leading-loose text-center text-2xl' + getSquareColor(row, col)} >
+    <div key={row + col} style={styles} className={'leading-loose text-center text-xl' + getSquareColor(row, col)} >
       <span className={getCardColor(card)}>{card}</span>
     </div>
   )
