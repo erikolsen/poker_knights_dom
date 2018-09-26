@@ -3,9 +3,8 @@ import Square from './Square'
 import Knight from './Knight'
 import _ from 'lodash'
 import { ActionCable } from 'react-actioncable-provider';
-import { API_ROOT } from '../constants'
+import { API_ROOT, HEADERS } from '../constants'
 import { Hand } from 'pokersolver'
-import { Link } from 'react-router-dom'
 //const x = i % 8;
 //const y = Math.floor(i / 8);
 //const black = (x + y) % 2 === 1;
@@ -26,7 +25,9 @@ class Board extends Component {
     this.url =  new URL(window.location.href)
     this.player = this.url.searchParams.get("player")
     this.state = {
+      allowNextHand: false,
       knights: [],
+      nextHand: false,
     }
   }
 
@@ -35,10 +36,6 @@ class Board extends Component {
       .then(res => res.json())
       .then(game => this.setState({ knights: game.knights }))
       //.then(res => console.log(res))
-  }
-
-  updateKnight(res) {
-    this.setState({knights: res.move})
   }
 
   getValue(row, col){
@@ -101,10 +98,33 @@ class Board extends Component {
     }
   }
 
+  nextHand(){
+    fetch(`${API_ROOT}/games/${this.gameId}/next_hand`,{
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({gameId: this.gameId})
+    });
+      //.then(game => this.setState({ knights: game.knights }))
+  }
+
+  updateKnight(res) {
+    this.setState({knights: res.move})
+  }
+
+  startNextHand(res){
+    console.log('Starting Next Hand')
+    this.setState({nextHand: parseInt(res.newHandSeq, 10)})
+  }
+
+
   render(){
+    if(this.state.nextHand > this.handId){
+      window.location = `/games/${this.gameId}/hands/${this.state.nextHand}/rounds/1`
+    }
     //console.log('Game Over ' + gameOver(this.state.knights))
     //let winner = gameOver(this.state.knights) ? <WinnerLink gameId={this.gameId} handId={this.handId} winner={gameOver(this.state.knights)} /> : ''
     let winner = gameOver(this.state.knights) ? this.getWinner() : ''
+    let hiddenClass = !!winner ? '' : ' hidden'
 
     return (
       <div>
@@ -113,7 +133,16 @@ class Board extends Component {
           onReceived={(res)=> this.updateKnight(res)}
         />
 
-        <h1>{winner}</h1>
+        <ActionCable
+          channel={{ channel: 'HandsChannel', gameId: this.gameId, handId: this.handId, roundId: this.roundId }}
+          onReceived={(res)=> this.startNextHand(res)}
+        />
+
+        <div className={'m-2' + hiddenClass}>
+          <h1>{winner}</h1>
+          <button className={'border-2 border-indigo p-2'} onClick={()=> {this.nextHand()}}>Next Hand</button>
+        </div>
+
         <div id='board' className="flex flex-wrap justify-center max-w-iphone min-w-iphone">
           {
             _.range(8).map((row,i)=>{

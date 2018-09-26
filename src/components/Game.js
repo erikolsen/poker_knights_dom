@@ -37,15 +37,6 @@ class Game extends Component {
   render() {
     let isPlayerOne = this.state.playerOne === localStorage.getItem('playerOne')
     let isPlayerTwo = this.state.playerTwo === localStorage.getItem('playerTwo')
-    //console.log('Player One storage ' + localStorage.getItem('playerOne'))
-    //console.log('Player One state ' + this.state.playerOne)
-    //console.log(this.state.playerOne === localStorage.getItem('playerOne'))
-
-    //console.log('Player Two storage ' + localStorage.getItem('playerTwo'))
-    //console.log('Player Two state ' + this.state.playerTwo)
-    //console.log(this.state.playerTwo === localStorage.getItem('playerTwo'))
-    //let playersHand = isPlayerOne ? <Hand player={this.state.playerOne} cards={this.state.white} /> : <Hand player={this.state.playerTwo} cards={this.state.black} />
-    //let opponent = isPlayerOne ? this.state.playerTwo : this.state.playerOne
     let playerOneHand = isPlayerOne ? <Hand player={this.state.playerOne} cards={this.state.white} /> : <h1 className='inline-block underline my-4' >{this.state.playerOne}</h1>
     let playerTwoHand = isPlayerTwo ? <Hand player={this.state.playerTwo} cards={this.state.black} /> : <h1 className='inline-block underline my-4' >{this.state.playerTwo}</h1>
     return (

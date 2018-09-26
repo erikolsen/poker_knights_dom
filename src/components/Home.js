@@ -1,6 +1,5 @@
 import React from 'react'
 import YouTube from 'react-youtube';
-import { Link } from 'react-router-dom'
 import { API_ROOT, HEADERS } from '../constants'
 const guid = (len) => {
   var buf = [],
