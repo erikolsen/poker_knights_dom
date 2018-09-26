@@ -8,6 +8,7 @@ class Lobby extends React.Component {
     super(props);
     this.gameLink = window.location.href
     localStorage.clear()
+    console.log(props.match.params.gameId)
     this.state = {
       playerOne: '',
       playerTwo: '',
@@ -23,36 +24,24 @@ class Lobby extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  createGame(){
-    if(this.state.playerOneReady && this.state.playerTwoReady){
-      fetch(`${API_ROOT}/games`, {
-        method: 'POST',
-        headers: HEADERS,
-        body: JSON.stringify(this.state)
-      }).then(
-        (response)=> {return response.json() }
-      ).then((data) => {
-        if(data.success){
-          window.location = window.location.href + '/hands/1/rounds/1'
-        } else {
-          console.log(data)
-          alert('Error')
-        }
-      })
-    }
+  componentWillMount() {
+    fetch(`${API_ROOT}/games/${this.props.match.params.gameId}`)
+      .then(res => res.json())
+      .then(game => this.setState(game))
+      //.then(res => console.log(res))
   }
 
   handleChange(event) {
     switch (event.target.name) {
       case 'playerTwoReady':
         if(!!this.state.playerTwo){
-          this.postChange({playerTwoReady: !this.state.playerTwoReady})
+          this.postChange({playerTwoReady: !this.state.playerTwoReady, playerTwo: this.state.playerTwo})
           localStorage.setItem('playerTwo', this.state.playerTwo)
         }
         break;
       case 'playerOneReady':
         if(!!this.state.playerOne){
-          this.postChange({playerOneReady: !this.state.playerOneReady})
+          this.postChange({playerOneReady: !this.state.playerOneReady, playerOne: this.state.playerOne})
           localStorage.setItem('playerOne', this.state.playerOne)
         }
         break;
@@ -93,10 +82,16 @@ class Lobby extends React.Component {
     this.setState(res)
   }
 
+  startGame(){
+    if(this.state.playerOneReady && this.state.playerTwoReady){
+      window.location = `/games/${this.state.gameId}/hands/1/rounds/1`
+    }
+  }
+
   render() {
     let playerOneReady = this.state.playerOneReady ? ' border-2 border-indigo' : ''
     let playerTwoReady = this.state.playerTwoReady ? ' border-2 border-indigo' : ''
-    this.createGame()
+    this.startGame()
 
     return (
       <div className='m-2'>

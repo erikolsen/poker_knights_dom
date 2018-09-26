@@ -1,6 +1,7 @@
 import React from 'react'
 import YouTube from 'react-youtube';
 import { Link } from 'react-router-dom'
+import { API_ROOT, HEADERS } from '../constants'
 const guid = (len) => {
   var buf = [],
     chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
@@ -14,6 +15,18 @@ const guid = (len) => {
   return buf.join('');
 }
 
+const defaultGame = {
+    playerOne: 'whee',
+    playerTwo: '',
+    stack: '1000',
+    blinds: '50',
+    timer: '30',
+    playerOneReady: false,
+    playerTwoReady: false,
+    copied: false,
+    gameId: guid()
+}
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -23,6 +36,23 @@ class Home extends React.Component {
   _onReady(event) {
     // access to player in all event handlers via event.target
     event.target.pauseVideo();
+  }
+
+  createGame(){
+    fetch(`${API_ROOT}/games`, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify(defaultGame)
+    }).then(
+      (response)=> {return response.json() }
+    ).then((data) => {
+      if(data.gameId){
+        window.location = `/games/${data.gameId}`
+      } else {
+        console.log(data)
+        alert('Error')
+      }
+    })
   }
 
   render(){
@@ -43,9 +73,9 @@ class Home extends React.Component {
             onReady={this._onReady}
           />
         </div>
-        <div className='w-full'>
-          <Link to={'/games/' + guid()} className='border-4 border-indigo m-2 p-2 text-xl no-underline flex justify-center'>Start a Game</Link>
-        </div>
+        <button onClick={this.createGame} className='w-full border-4 border-indigo m-2 p-2 text-xl no-underline flex justify-center'>
+          Start a Game
+        </button>
       </div>
     )
   }
