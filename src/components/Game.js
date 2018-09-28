@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Player from './Player'
 import Hand from './Hand'
 import Board from './Board'
 import QS from 'query-string'
@@ -35,20 +36,16 @@ class Game extends Component {
   }
 
   render() {
-    let isPlayerOne = this.state.playerOne === localStorage.getItem('playerOne')
-    let isPlayerTwo = this.state.playerTwo === localStorage.getItem('playerTwo')
-    let playerOneHand = isPlayerOne ? <Hand player={this.state.playerOne} cards={this.state.white} /> : <h1 className='inline-block underline my-4' >{this.state.playerOne}</h1>
-    let playerTwoHand = isPlayerTwo ? <Hand player={this.state.playerTwo} cards={this.state.black} /> : <h1 className='inline-block underline my-4' >{this.state.playerTwo}</h1>
     return (
       <div>
-        <div>
-          {playerTwoHand}
+        <div className='mx-2'>
+          <Player name={this.state.playerTwo} cards={this.state.black} />
         </div>
         <div className='flex justify-center'>
           <Board white={this.state.white} black={this.state.black} gameId={this.gameId} handId={this.handId} roundId={this.roundId} cards={this.state.cards} knights={this.state.knights} />
         </div>
-        <div className=''>
-          { playerOneHand }
+        <div className='mx-2'>
+          <Player name={this.state.playerOne} cards={this.state.white} />
         </div>
       </div>
     );

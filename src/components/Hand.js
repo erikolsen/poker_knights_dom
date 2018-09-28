@@ -10,13 +10,12 @@ const getCardColor = (card) =>{
 
 const Hand = ({player,cards})=>{
   return(
-    <div className='mx-4'>
-      <h1 className='inline-block underline my-4' >{player}</h1>
+    <div>
       <div className='inline-block'>
-        <div className={getCardColor(cards[0]) + ' inline-block h-12 w-16 border text-center text-2xl leading-loose m-2'}>
+        <div className={getCardColor(cards[0]) + ' inline-block h-12 w-16 border text-center text-2xl leading-loose'}>
           {cards[0]}
         </div>
-        <div className={getCardColor(cards[1]) + ' inline-block h-12 w-16 border text-center text-2xl leading-loose m-2'}>
+        <div className={getCardColor(cards[1]) + ' inline-block h-12 w-16 border text-center text-2xl leading-loose'}>
           {cards[1]}
         </div>
       </div>
