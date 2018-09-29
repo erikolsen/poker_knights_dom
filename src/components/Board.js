@@ -28,6 +28,7 @@ class Board extends Component {
       allowNextHand: false,
       knights: [],
       nextHand: false,
+      winner: '',
     }
   }
 
@@ -94,7 +95,8 @@ class Board extends Component {
       //console.log('White Wins ' + _.includes(whiteHands, winner[0]))
       //console.log('Winner ' + winner)
       //console.log('Description ' + winner[0].descr)
-      return whiteWins ? `White wins with ${winner[0].descr}` : `Black wins with ${winner[0].descr}`
+      let winnerMessage = whiteWins ? `White wins with ${winner[0].descr}` : `Black wins with ${winner[0].descr}`
+      this.setState({winner: winnerMessage})
     }
   }
 
@@ -112,20 +114,28 @@ class Board extends Component {
   }
 
   startNextHand(res){
-    console.log('Starting Next Hand')
     this.setState({nextHand: parseInt(res.newHandSeq, 10)})
   }
 
+  showBetBar(){
+    this.props.showBetBar(true)
+  }
+
+  componentDidUpdate(){
+    if(!this.props.betting && gameOver(this.state.knights) && !this.props.showWinner ){
+      this.showBetBar()
+    }
+
+    if(!this.state.winner && this.props.showWinner){
+      this.getWinner()
+    }
+  }
 
   render(){
     if(this.state.nextHand > this.handId){
       window.location = `/games/${this.gameId}/hands/${this.state.nextHand}/rounds/1`
     }
-    //console.log('Game Over ' + gameOver(this.state.knights))
-    //let winner = gameOver(this.state.knights) ? <WinnerLink gameId={this.gameId} handId={this.handId} winner={gameOver(this.state.knights)} /> : ''
-    let winner = gameOver(this.state.knights) ? this.getWinner() : ''
-    let hiddenClass = !!winner ? '' : ' hidden'
-
+    let hiddenClass = this.state.winner ? '' : ' hidden'
     return (
       <div>
         <ActionCable
@@ -139,7 +149,7 @@ class Board extends Component {
         />
 
         <div className={'m-2' + hiddenClass}>
-          <h1>{winner}</h1>
+          <h1>{this.state.winner}</h1>
           <button className={'border-2 border-indigo p-2'} onClick={()=> {this.nextHand()}}>Next Hand</button>
         </div>
 
