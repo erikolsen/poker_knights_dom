@@ -101,7 +101,7 @@ class Lobby extends React.Component {
         />
 
         <h1>Lobby</h1>
-        <div className='text-2xl'>
+        <div className='text-xl'>
           <div>
             <label className='my-2 flex'>
               <span className='mr-2 w-1/2'>Starting Stack:</span>
