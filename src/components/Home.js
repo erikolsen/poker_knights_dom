@@ -64,16 +64,15 @@ class Home extends React.Component {
     }
     return(
       <div>
-        <h1>Welcome</h1>
-        <div className='my-2'>
+        <div className='my-4'>
           <YouTube
             videoId="jQye51Pv-B8"
             opts={opts}
             onReady={this._onReady}
           />
         </div>
-        <div className='w-full m-2'>
-          <button onClick={this.createGame} className='w-full border-4 border-indigo m-2 p-2 text-xl no-underline flex justify-center'>
+        <div className='w-full m-2 flex justify-center'>
+          <button onClick={this.createGame} className='w-3/4 border-4 border-indigo m-2 p-4 text-xl no-underline'>
             Start a Game
           </button>
         </div>
