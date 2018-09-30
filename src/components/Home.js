@@ -67,14 +67,16 @@ class Home extends React.Component {
         <h1>Welcome</h1>
         <div className='my-2'>
           <YouTube
-            videoId="2g811Eo7K8U"
+            videoId="jQye51Pv-B8"
             opts={opts}
             onReady={this._onReady}
           />
         </div>
-        <button onClick={this.createGame} className='w-full border-4 border-indigo m-2 p-2 text-xl no-underline flex justify-center'>
-          Start a Game
-        </button>
+        <div className='w-full m-2'>
+          <button onClick={this.createGame} className='w-full border-4 border-indigo m-2 p-2 text-xl no-underline flex justify-center'>
+            Start a Game
+          </button>
+        </div>
       </div>
     )
   }
