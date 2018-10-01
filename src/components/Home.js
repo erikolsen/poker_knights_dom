@@ -64,7 +64,7 @@ class Home extends React.Component {
     }
     return(
       <div>
-        <div className='my-4'>
+        <div className='my-4 flex justify-center'>
           <YouTube
             videoId="jQye51Pv-B8"
             opts={opts}
