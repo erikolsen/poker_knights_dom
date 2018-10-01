@@ -33,7 +33,7 @@ class BetBar extends React.Component {
     fetch(`${API_ROOT}/games/${this.gameId}/hands/${this.handId}/rounds/${this.roundId}/fold`,{
       method: 'POST',
       headers: HEADERS,
-      body: JSON.stringify({'game': {'player' : player } } )
+      body: JSON.stringify({'player' : player } )
     });
   }
 
@@ -49,7 +49,7 @@ class BetBar extends React.Component {
           </button>
           <button onClick={()=>this.makeCall(20)} className="w-1/3 p-4 border-2 text-3xl text-center">
             Call </button>
-          <button onClick={()=>this.makeFold()} className="w-1/3 p-4 border-2 text-3xl text-center">
+          <button onClick={()=>this.foldHand()} className="w-1/3 p-4 border-2 text-3xl text-center">
             Fold
           </button>
         </div>
