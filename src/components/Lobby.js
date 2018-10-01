@@ -37,12 +37,14 @@ class Lobby extends React.Component {
         if(!!this.state.playerTwo){
           this.postChange({playerTwoReady: !this.state.playerTwoReady, playerTwo: this.state.playerTwo})
           localStorage.setItem('playerTwo', this.state.playerTwo)
+          localStorage.setItem('playerOne', '')
         }
         break;
       case 'playerOneReady':
         if(!!this.state.playerOne){
           this.postChange({playerOneReady: !this.state.playerOneReady, playerOne: this.state.playerOne})
           localStorage.setItem('playerOne', this.state.playerOne)
+          localStorage.setItem('playerTwo', '')
         }
         break;
       case 'stack':
