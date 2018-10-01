@@ -40,10 +40,11 @@ class BetBar extends React.Component {
   render(){
     let hiddenClass = this.props.active ? '' : ' hidden'
     let betAction = this.props.pot > 0 ? 'Raise' : 'Bet'
+    let betAmount = this.props.pot > 0 ? 40 : 20
     return(
       <div className={hiddenClass}>
         <div className={'flex justify-between'}>
-          <button onClick={()=>this.makeBet(20)} className="w-1/3 p-4 border-2 text-3xl text-center">
+          <button onClick={()=>this.makeBet(betAmount)} className="w-1/3 p-4 border-2 text-3xl text-center">
             { betAction }
           </button>
           <button onClick={()=>this.makeCall(20)} className="w-1/3 p-4 border-2 text-3xl text-center">

@@ -96,7 +96,20 @@ class Board extends Component {
       //console.log('Winner ' + winner)
       //console.log('Description ' + winner[0].descr)
       let winnerMessage = whiteWins ? `White wins with ${winner[0].descr}` : `Black wins with ${winner[0].descr}`
+      let winnerColor = whiteWins ? 'white' : 'black'
+      this.postWinner(winnerColor)
       this.setState({winner: winnerMessage})
+    }
+  }
+
+  postWinner(color){
+    // only post once
+    if(!!localStorage.getItem('playerOne')){
+      fetch(`${API_ROOT}/games/${this.gameId}/hands/${this.handId}/rounds/${this.roundId}/winner`,{
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify({winner: color})
+      });
     }
   }
 

@@ -7,7 +7,7 @@ class Lobby extends React.Component {
   constructor(props) {
     super(props);
     this.gameLink = window.location.href
-    localStorage.clear()
+    //localStorage.clear()
     console.log(props.match.params.gameId)
     this.state = {
       playerOne: '',
