@@ -47,7 +47,7 @@ class BetBar extends React.Component {
 
   render(){
     let hiddenClass = this.props.active ? '' : ' hidden'
-    let betAction = this.props.pot > 0 ? 'Raise' : 'Bet'
+    let betAction = this.props.pot > 0 ? 'Raise 20' : 'Bet 20'
     let canCheck = this.props.pot === 0
     let betAmount = this.props.pot > 0 ? 40 : 20
     return(
@@ -60,7 +60,8 @@ class BetBar extends React.Component {
             Check
           </button>
           <button onClick={()=>this.makeCall(20)} className="w-1/3 p-4 border-2 text-3xl text-center">
-            Call </button>
+            Call 20
+          </button>
           <button onClick={()=>this.foldHand()} className="w-1/3 p-4 border-2 text-3xl text-center">
             Fold
           </button>
