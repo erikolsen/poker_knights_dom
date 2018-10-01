@@ -15,7 +15,7 @@ const guid = (len) => {
 }
 
 const defaultGame = {
-    playerOne: 'whee',
+    playerOne: '',
     playerTwo: '',
     stack: '1000',
     blinds: '50',
