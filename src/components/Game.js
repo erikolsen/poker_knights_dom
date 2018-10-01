@@ -81,7 +81,7 @@ class Game extends Component {
 
         <div className='mx-2'>
           <Player active={!playerOneTurn} name={this.state.playerTwo} cards={this.state.black} stack={this.state.playerTwoStack}/>
-          <BetBar pot={this.state.pot} active={!playerOneTurn && this.state.showBetBar} gameId={this.gameId} handId={this.handId} roundId={this.roundId} />
+          <BetBar bets={this.state.bets} pot={this.state.pot} active={!playerOneTurn && this.state.showBetBar} gameId={this.gameId} handId={this.handId} roundId={this.roundId} />
         </div>
 
         <div className='flex justify-center m-1'>
@@ -94,7 +94,7 @@ class Game extends Component {
 
         <div className='mx-2'>
           <Player active={playerOneTurn} name={this.state.playerOne} cards={this.state.white} stack={this.state.playerOneStack} />
-          <BetBar pot={this.state.pot} active={playerOneTurn && this.state.showBetBar} gameId={this.gameId} handId={this.handId} roundId={this.roundId} />
+          <BetBar bets={this.state.bets} pot={this.state.pot} active={playerOneTurn && this.state.showBetBar} gameId={this.gameId} handId={this.handId} roundId={this.roundId} />
         </div>
 
       </div>
