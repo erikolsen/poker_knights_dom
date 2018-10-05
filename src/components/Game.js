@@ -95,7 +95,7 @@ class Game extends Component {
         />
 
         <div className='mx-2'>
-          <Player active={!this.playerOneTurn() && !!this.state.winner} name={this.state.playerTwo} cards={this.state.black} stack={this.state.playerTwoStack}/>
+          <Player active={!this.playerOneTurn()} name={this.state.playerTwo} cards={this.state.black} stack={this.state.playerTwoStack}/>
         </div>
 
         <div className='flex justify-center m-1'>
@@ -107,7 +107,7 @@ class Game extends Component {
         </div>
 
         <div className='mx-2'>
-          <Player active={this.playerOneTurn() && !!this.state.winner} name={this.state.playerOne} cards={this.state.white} stack={this.state.playerOneStack} />
+          <Player active={this.playerOneTurn()} name={this.state.playerOne} cards={this.state.white} stack={this.state.playerOneStack} />
         </div>
 
         <div className={'pin-b fixed w-full' + hiddenClass}>
