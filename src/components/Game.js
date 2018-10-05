@@ -26,6 +26,7 @@ class Game extends Component {
       playerTwoStack: '',
       pot: '',
       bets: [],
+      position: [],
       showWinner: false,
       showBetBar: false,
     }
@@ -37,6 +38,7 @@ class Game extends Component {
       .then(game => this.setState({ cards: game.cards,
                                     white: game.white,
                                     black: game.black,
+                                    position: game.position,
                                     playerOne: game.playerOne,
                                     playerOneStack: game.playerOneStack,
                                     playerTwo: game.playerTwo,
@@ -54,6 +56,7 @@ class Game extends Component {
                   showWinner: res.showWinner,
                   betting: res.betting,
                   showBetBar: res.showBetBar,
+                  position: res.position,
                   playerOneStack: res.playerOneStack,
                   playerTwoStack: res.playerTwoStack
     })
@@ -69,8 +72,20 @@ class Game extends Component {
     //}
   //}
 
+  playerOneTurn(){
+    if(this.state.showBetBar){
+      return this.state.bets.length % 2 === 0
+    } else {
+      if(!!this.state.showWinner) { return false }
+      return this.state.position.length % 2 !== 0
+    }
+  }
   render() {
-    let playerOneTurn = this.state.bets.length % 2 === 0
+    let isPlayerOne = localStorage.getItem('playerOne')
+    let isPlayerTwo = localStorage.getItem('playerTwo')
+    let hiddenClass = ((this.playerOneTurn() && isPlayerOne) || (!this.playerOneTurn() && isPlayerTwo)) &&
+      this.state.showBetBar &&
+      !this.state.showWinner ? '' : ' hidden'
 
     return (
       <div>
@@ -80,8 +95,7 @@ class Game extends Component {
         />
 
         <div className='mx-2'>
-          <Player active={!playerOneTurn} name={this.state.playerTwo} cards={this.state.black} stack={this.state.playerTwoStack}/>
-          <BetBar bets={this.state.bets} pot={this.state.pot} active={!playerOneTurn && this.state.showBetBar} gameId={this.gameId} handId={this.handId} roundId={this.roundId} />
+          <Player active={!this.playerOneTurn() && !!this.state.winner} name={this.state.playerTwo} cards={this.state.black} stack={this.state.playerTwoStack}/>
         </div>
 
         <div className='flex justify-center m-1'>
@@ -93,10 +107,12 @@ class Game extends Component {
         </div>
 
         <div className='mx-2'>
-          <Player active={playerOneTurn} name={this.state.playerOne} cards={this.state.white} stack={this.state.playerOneStack} />
-          <BetBar bets={this.state.bets} pot={this.state.pot} active={playerOneTurn && this.state.showBetBar} gameId={this.gameId} handId={this.handId} roundId={this.roundId} />
+          <Player active={this.playerOneTurn() && !!this.state.winner} name={this.state.playerOne} cards={this.state.white} stack={this.state.playerOneStack} />
         </div>
 
+        <div className={'pin-b fixed w-full' + hiddenClass}>
+          <BetBar bets={this.state.bets} pot={this.state.pot} gameId={this.gameId} handId={this.handId} roundId={this.roundId} />
+        </div>
       </div>
     );
   }
