@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Player from './Player'
-import Hand from './Hand'
 import Board from './Board'
 import BetBar from './BetBar'
 import QS from 'query-string'
@@ -66,11 +65,6 @@ class Game extends Component {
     this.setState({showBetBar: true})
   }
 
-  //componentDidUpdate(){
-    //if(this.state.showWinner && this.state.showBetBar){
-      //this.setState({showBetBar: false})
-    //}
-  //}
 
   playerOneTurn(){
     if(this.state.showBetBar){
@@ -80,6 +74,7 @@ class Game extends Component {
       return this.state.position.length % 2 !== 0
     }
   }
+
   render() {
     let isPlayerOne = localStorage.getItem('playerOne')
     let isPlayerTwo = localStorage.getItem('playerTwo')
@@ -99,7 +94,20 @@ class Game extends Component {
         </div>
 
         <div className='flex justify-center m-1'>
-          <Board betting={this.state.showBetBar} showBetBar={this.showBetBar} showWinner={this.state.showWinner} white={this.state.white} black={this.state.black} gameId={this.gameId} handId={this.handId} roundId={this.roundId} cards={this.state.cards} knights={this.state.knights} />
+          <Board
+            playerOne={this.state.playerOne}
+            playerTwo={this.state.playerTwo}
+            betting={this.state.showBetBar}
+            showBetBar={this.showBetBar}
+            showWinner={this.state.showWinner}
+            white={this.state.white}
+            black={this.state.black}
+            gameId={this.gameId}
+            handId={this.handId}
+            roundId={this.roundId}
+            cards={this.state.cards}
+            knights={this.state.knights}
+          />
         </div>
 
         <div className='mx-2 border-2 border-black text-center'>

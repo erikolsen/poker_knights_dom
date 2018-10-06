@@ -1,6 +1,5 @@
 import React from 'react'
 import Hand from './Hand'
-import BetBar from './BetBar'
 
 const CurrentPlayer = ({name, cards, stack, activeClass})=>{
   return(

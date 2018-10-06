@@ -4,7 +4,7 @@ import Knight from './Knight'
 import _ from 'lodash'
 import { ActionCable } from 'react-actioncable-provider';
 import { API_ROOT, HEADERS } from '../constants'
-import { Hand } from 'pokersolver'
+import HandCalculator from '../HandCalculator'
 //const x = i % 8;
 //const y = Math.floor(i / 8);
 //const black = (x + y) % 2 === 1;
@@ -51,54 +51,18 @@ class Board extends Component {
       return getCard(this.props.cards, row, col)
     }
   }
-  swapCard(card){
-    _.replace(card, '♠', 's');
-    _.replace(card, '♥', 'h');
-    _.replace(card, '♣', 'c');
-    _.replace(card, '♦', 'd');
-    _.replace(card, '10', 'T');
-    return card
-  }
-
 
   getWinner(){
     if(!_.isEmpty(this.state.knights)){
-      let cards = _.reverse(_.chunk(this.props.cards, 4))
-      cards.push([])
-      cards.unshift([])
-      let playerOneRows = this.state.knights.slice(0,2).map((x)=> x[0])
-      let playerTwoRows = this.state.knights.slice(2,4).map((x)=> x[0])
-      //console.log('white rows ' + playerOneRows)
-      //console.log('black rows ' + playerTwoRows)
+      const calc = new HandCalculator(this.props.playerOne,
+                                      this.props.playerTwo,
+                                      this.props.cards,
+                                      this.state.knights,
+                                      this.props.white,
+                                      this.props.black)
 
-      //console.log('whee ' + cards[playerOneRows[0]])
-      //console.log('white hand ' + this.props.white)
-      let whiteOneA = Hand.solve(_.concat(cards[playerOneRows[0]], this.props.white[0]).map((card)=> this.swapCard(card)))
-      let whiteOneB = Hand.solve(_.concat(cards[playerOneRows[0]], this.props.white[1]).map((card)=> this.swapCard(card)))
-      let whiteTwoA = Hand.solve(_.concat(cards[playerOneRows[1]], this.props.white[0]).map((card)=> this.swapCard(card)))
-      let whiteTwoB = Hand.solve(_.concat(cards[playerOneRows[1]], this.props.white[1]).map((card)=> this.swapCard(card)))
-      //let whiteHands = [whiteOneA]
-      let whiteHands = Hand.winners([whiteOneA, whiteOneB, whiteTwoA, whiteTwoB])
-      //console.log('White Best ' + whiteHands)
-
-      let blackOneA = Hand.solve(_.concat(cards[playerTwoRows[0]], this.props.black[0]).map((card)=> this.swapCard(card)))
-      let blackOneB = Hand.solve(_.concat(cards[playerTwoRows[0]], this.props.black[1]).map((card)=> this.swapCard(card)))
-      let blackTwoA = Hand.solve(_.concat(cards[playerTwoRows[1]], this.props.black[0]).map((card)=> this.swapCard(card)))
-      let blackTwoB = Hand.solve(_.concat(cards[playerTwoRows[1]], this.props.black[1]).map((card)=> this.swapCard(card)))
-      let blackHands = Hand.winners([blackOneA, blackOneB, blackTwoA, blackTwoB])
-      //console.log('Black best ' + blackHands)
-
-      let hands = _.concat(whiteHands, blackHands)
-      //console.log('Hands ' + hands)
-      let winner = Hand.winners(hands)
-      let whiteWins = _.includes(whiteHands, winner[0])
-      //console.log('White Wins ' + _.includes(whiteHands, winner[0]))
-      //console.log('Winner ' + winner)
-      //console.log('Description ' + winner[0].descr)
-      let winnerMessage = whiteWins ? `White wins with ${winner[0].descr}` : `Black wins with ${winner[0].descr}`
-      let winnerColor = whiteWins ? 'white' : 'black'
-      this.postWinner(winnerColor)
-      this.setState({winner: winnerMessage})
+      this.postWinner(calc.winnerColor())
+      this.setState({winner: calc.winnerMessage()})
     }
   }
 
@@ -162,8 +126,8 @@ class Board extends Component {
         />
 
         <div className={'m-2' + hiddenClass}>
-          <h1>{this.state.winner}</h1>
-          <button className={'border-2 border-indigo p-2'} onClick={()=> {this.nextHand()}}>Next Hand</button>
+          <p className='text-2xl font-bold'>{this.state.winner}</p>
+          <button className={'w-full border-2 border-indigo p-2 text-xl'} onClick={()=> {this.nextHand()}}>Next Hand</button>
         </div>
 
         <div id='board' className="flex flex-wrap justify-center max-w-iphone min-w-iphone">
